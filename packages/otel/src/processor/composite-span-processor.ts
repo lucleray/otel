@@ -62,7 +62,9 @@ export class CompositeSpanProcessor implements SpanProcessor {
 
       // Flush the streams to avoid data loss.
       if (vrc) {
+        diag.debug("@vercel/otel: registering waitUntil callback");
         vrc.waitUntil(async () => {
+          diag.debug("@vercel/otel: starting waitUntil callback");
           if (this.rootSpanIds.has(traceId)) {
             // Not root has not completed yet, so no point in flushing.
             // Need to wait for onEnd.
@@ -83,7 +85,12 @@ export class CompositeSpanProcessor implements SpanProcessor {
               clearTimeout(timer);
             }
           }
-          return this.forceFlush();
+          return this.forceFlush().then(() => new Promise((resolve) => {
+            setTimeout(() => {
+              diag.debug("@vercel/otel: waited extra 1000ms after forceFlush");
+              resolve(undefined);
+            }, 1000);
+          }));
         });
       }
     }
