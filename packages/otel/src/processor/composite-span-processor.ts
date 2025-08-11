@@ -24,7 +24,7 @@ export class CompositeSpanProcessor implements SpanProcessor {
   ) {}
 
   forceFlush(): Promise<void> {
-    return Promise.all(
+    return Promise.allSettled(
       this.processors.map((p) =>
         p.forceFlush().catch((e) => {
           diag.error("@vercel/otel: forceFlush failed:", e);
