@@ -449,8 +449,6 @@ function parseSpanProcessor(
 
           // Consider going throw `VERCEL_OTEL_ENDPOINTS` (otel collector) for OTLP.
           else if (
-            !configuration.traceExporter ||
-            configuration.traceExporter === "auto" ||
             env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT ||
             env.OTEL_EXPORTER_OTLP_ENDPOINT
           ) {
