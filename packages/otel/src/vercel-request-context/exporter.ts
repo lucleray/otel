@@ -33,6 +33,7 @@ export class VercelRuntimeSpanExporter implements SpanExporter {
       });
 
       context.telemetry.reportSpans(data);
+      diag.debug("@vercel/otel: spans exported to telemetry.reportSpans successfully", JSON.stringify(data));
       resultCallback({ code: ExportResultCode.SUCCESS, error: undefined });
     } catch (e) {
       resultCallback({
